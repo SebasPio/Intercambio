@@ -406,10 +406,25 @@
     return !!el && el.tagName === "INPUT";
   }
 
+  let syncMode = "";
+
+  function setMode(mode) {
+    syncMode = mode;
+    setStatus(
+      mode === "realtime"
+        ? "Sincronización en tiempo real activa."
+        : "Sincronización por sondeo activa.",
+      mode === "realtime" ? "ok" : undefined,
+    );
+  }
+
   async function refresh() {
     try {
+      state.drafts = {};
+      pendingRemote = false;
       await loadData();
       render();
+      if (syncMode) setMode(syncMode);
     } catch (_) {
       /* ignora errores transitorios */
     }
@@ -421,8 +436,6 @@
       setStatus("Hay cambios nuevos de otros. Guarda o cancela para verlos.");
       return;
     }
-    pendingRemote = false;
-    setStatus("");
     refresh();
   }
 
@@ -449,7 +462,7 @@
         console.log("[realtime] estado:", status);
         if (status === "SUBSCRIBED") {
           subscribed = true;
-          setStatus("Sincronización en tiempo real activa.", "ok");
+          setMode("realtime");
         } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || status === "CLOSED") {
           if (!subscribed) startPolling();
         }
@@ -463,7 +476,7 @@
   function startPolling() {
     if (polling) return;
     polling = true;
-    setStatus("Sincronización por sondeo activa.");
+    setMode("polling");
     setInterval(async () => {
       try {
         const options = await rest("gift_options?select=id,participant_id,position,text&order=participant_id,position");
@@ -474,10 +487,11 @@
           setStatus("Hay cambios nuevos de otros. Guarda o cancela para verlos.");
           return;
         }
+        state.drafts = {};
         state.options = options;
         state.sig = sig;
-        setStatus("");
         render();
+        setMode("polling");
       } catch (_) {
         /* ignora errores transitorios */
       }
