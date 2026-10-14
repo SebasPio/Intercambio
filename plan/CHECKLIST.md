@@ -51,10 +51,11 @@ Estado general: **en progreso — Etapa 1**.
 - [x] Probado end-to-end contra las funciones desplegadas (13/13).
 
 ### Etapa 5 — Frontend
-- [ ] Lectura pública (participantes, asignaciones, opciones).
-- [ ] Validación del enlace y gestión de sesión.
-- [ ] Edición con Guardar/Cancelar.
-- [ ] Estados: cargando, guardado, error.
+- [x] Lectura pública (participantes, asignaciones, opciones).
+- [x] Validación del enlace y gestión de sesión (localStorage + `session-info`).
+- [x] Edición con Guardar/Cancelar (diferencias respecto al estado original).
+- [x] Estados: cargando, guardado, error; modo solo lectura sin enlace.
+- [ ] Validación en navegador por el usuario (local y luego GitHub Pages).
 
 ### Etapa 6 — Sincronización
 - [ ] Realtime `postgres_changes` sobre `gift_options`.
