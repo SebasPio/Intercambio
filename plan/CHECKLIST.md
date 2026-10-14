@@ -35,10 +35,12 @@ Estado general: **en progreso — Etapa 1**.
 - [x] Migraciones aplicadas en Supabase (verificado: 6 tablas presentes).
 
 ### Etapa 3 — Edge Functions
-- [ ] `validate-link` (credencial → sesión + identidad + permisos).
-- [ ] `options-write` (alta/modificación/borrado con revalidación).
-- [ ] `session-info` (renovación deslizante).
-- [ ] CORS limitado al dominio de GitHub Pages.
+- [x] `validate-link` (credencial → sesión + identidad + permisos).
+- [x] `options-write` (alta/modificación/borrado con revalidación).
+- [x] `session-info` (renovación deslizante).
+- [x] CORS limitado al dominio de GitHub Pages.
+- [x] `verify_jwt = false` (autorización propia por credencial/sesión).
+- [x] Desplegadas (`--use-api`) y prueba de humo (401 + preflight OK).
 
 ### Etapa 4 — Scripts de administración (Deno, `service_role`)
 - [ ] Inicialización: participantes, asignaciones, identidades, permisos.

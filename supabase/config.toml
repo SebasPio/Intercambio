@@ -413,3 +413,17 @@ enabled = true
 # formatted with uppercase keywords, indent 2, max width 180, trailing commas,
 # and column/key alignment. Set to "null" to emit raw, unformatted SQL.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":180,\"commaStyle\":\"trailing\"}"
+
+# ---------------------------------------------------------------------------
+# Edge Functions. verify_jwt = false: la autorización (credencial de enlace o
+# sesión) se valida dentro de cada función, no mediante un JWT de usuario.
+# ---------------------------------------------------------------------------
+
+[functions.validate-link]
+verify_jwt = false
+
+[functions.session-info]
+verify_jwt = false
+
+[functions.options-write]
+verify_jwt = false
