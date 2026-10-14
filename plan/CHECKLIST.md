@@ -23,14 +23,16 @@ Estado general: **en progreso — Etapa 1**.
 - [x] `.gitignore` (secretos, `.env`, enlaces generados).
 - [x] Carpeta `plan/` con objetivos y checklist.
 - [x] Esqueleto `frontend/`, `supabase/functions/`, `supabase/migrations/`, `scripts/`.
-- [ ] Commit inicial.
+- [x] Commit inicial (`c1a3cc3`).
 
 ### Etapa 2 — Migraciones SQL
-- [ ] Tablas: `participants`, `assignments`, `gift_options`, `access_identities`,
-      `edit_permissions`, `sessions`.
-- [ ] Claves foráneas, restricciones e índices.
-- [ ] RLS: lectura pública en tablas de datos; sin escritura para `anon`.
-- [ ] Privilegios SQL explícitos (revocar escrituras directas).
+- [x] Tablas: `participants`, `assignments`, `gift_options`, `access_identities`,
+      `edit_permissions`, `sessions` (`20261013090000_initial_schema.sql`).
+- [x] Claves foráneas, restricciones e índices.
+- [x] RLS: lectura pública en tablas de datos; sin escritura para `anon`.
+- [x] Privilegios SQL explícitos (revocar escrituras directas).
+- [x] Realtime: migración preparada (`20261013090100_realtime.sql`).
+- [x] Migraciones aplicadas en Supabase (verificado: 6 tablas presentes).
 
 ### Etapa 3 — Edge Functions
 - [ ] `validate-link` (credencial → sesión + identidad + permisos).
@@ -76,9 +78,12 @@ Estado general: **en progreso — Etapa 1**.
 
 ## Acciones manuales del usuario (pendientes)
 
-- [ ] Crear proyecto en Supabase y facilitar Project URL + anon key.
-- [ ] Crear cuenta y repositorio en GitHub.
-- [ ] `supabase login` / `supabase link`.
+- [x] Crear proyecto en Supabase.
+- [x] Crear repositorio en GitHub y subir `main` (`SebasPio/Intercambio`).
+- [x] Instalar CLI de Supabase local (`~/.local/bin/supabase` v2.120.0) y `supabase init`.
+- [x] `supabase login` (access token).
+- [x] `supabase link --project-ref vnmvlrgaeesohkvnyytz`.
+- [x] `supabase db push --linked` (migraciones aplicadas).
 - [ ] Rellenar `.env` local con `service_role` (no versionar).
 - [ ] Ejecutar init/generación de enlaces y distribuirlos por WhatsApp.
 - [ ] Habilitar GitHub Pages.
