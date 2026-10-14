@@ -441,8 +441,12 @@
     });
     client
       .channel("gift_options_changes")
-      .on("postgres_changes", { event: "*", schema: "public", table: "gift_options" }, onRemoteChange)
+      .on("postgres_changes", { event: "*", schema: "public", table: "gift_options" }, (payload) => {
+        console.log("[realtime] evento:", payload.eventType);
+        onRemoteChange();
+      })
       .subscribe((status) => {
+        console.log("[realtime] estado:", status);
         if (status === "SUBSCRIBED") {
           subscribed = true;
           setStatus("Sincronización en tiempo real activa.", "ok");
@@ -505,6 +509,12 @@
 
   document.addEventListener("focusout", () => {
     if (pendingRemote && !anyPending() && !isEditing()) onRemoteChange();
+  });
+
+  document.getElementById("refresh-button").addEventListener("click", () => {
+    pendingRemote = false;
+    setStatus("");
+    refresh();
   });
 
   init();
