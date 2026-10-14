@@ -1,0 +1,30 @@
+# Secretos y credenciales (NUNCA versionar)
+.env
+.env.*
+!.env.example
+*.env
+keys/
+.secrets/
+*.pem
+*.key
+
+# Supabase local
+supabase/.temp/
+supabase/.branches/
+supabase/.env
+
+# Enlaces generados (contienen credenciales)
+links/
+enlaces/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Node (por si se usa alguna herramienta puntual)
+node_modules/
