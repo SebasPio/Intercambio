@@ -19,7 +19,12 @@
     displayName: null,
     editable: new Set(),
     drafts: {},
+    sig: "",
   };
+
+  let pendingRemote = false;
+  let polling = false;
+  let syncStarted = false;
 
   // --- API ------------------------------------------------------------------
 
@@ -102,7 +107,7 @@
     state.participants = participants;
     state.assignments = assignments;
     state.options = options;
-    state.drafts = {};
+    state.sig = JSON.stringify(options);
   }
 
   const nameOf = (id) => (state.participants.find((p) => p.id === id) || {}).name || "?";
@@ -293,9 +298,12 @@
     cancel.className = "ghost";
     cancel.textContent = "Cancelar";
     cancel.addEventListener("click", () => {
+      const hadRemote = pendingRemote;
       state.drafts = {};
+      pendingRemote = false;
       setStatus("");
-      render();
+      if (hadRemote) refresh();
+      else render();
     });
 
     const save = document.createElement("button");
@@ -352,6 +360,8 @@
           await callFunction("options-write", { token: state.token, participant_id: pid, ...op });
         }
       }
+      state.drafts = {};
+      pendingRemote = false;
       await loadData();
       render();
       setStatus("Cambios guardados.", "ok");
@@ -389,6 +399,86 @@
     })[c]);
   }
 
+  // --- Sincronización (Realtime con respaldo de sondeo) ---------------------
+
+  function isEditing() {
+    const el = document.activeElement;
+    return !!el && el.tagName === "INPUT";
+  }
+
+  async function refresh() {
+    try {
+      await loadData();
+      render();
+    } catch (_) {
+      /* ignora errores transitorios */
+    }
+  }
+
+  function onRemoteChange() {
+    if (anyPending() || isEditing()) {
+      pendingRemote = true;
+      setStatus("Hay cambios nuevos de otros. Guarda o cancela para verlos.");
+      return;
+    }
+    pendingRemote = false;
+    setStatus("");
+    refresh();
+  }
+
+  function startSync() {
+    if (syncStarted) return;
+    syncStarted = true;
+
+    if (!window.supabase) {
+      startPolling();
+      return;
+    }
+
+    let subscribed = false;
+    const client = window.supabase.createClient(supabaseUrl, supabaseAnonKey, {
+      auth: { persistSession: false },
+    });
+    client
+      .channel("gift_options_changes")
+      .on("postgres_changes", { event: "*", schema: "public", table: "gift_options" }, onRemoteChange)
+      .subscribe((status) => {
+        if (status === "SUBSCRIBED") {
+          subscribed = true;
+        } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || status === "CLOSED") {
+          if (!subscribed) startPolling();
+        }
+      });
+
+    setTimeout(() => {
+      if (!subscribed) startPolling();
+    }, 8000);
+  }
+
+  function startPolling() {
+    if (polling) return;
+    polling = true;
+    setStatus("Sincronización por sondeo activa.");
+    setInterval(async () => {
+      try {
+        const options = await rest("gift_options?select=id,participant_id,position,text&order=participant_id,position");
+        const sig = JSON.stringify(options);
+        if (sig === state.sig) return;
+        if (anyPending() || isEditing()) {
+          pendingRemote = true;
+          setStatus("Hay cambios nuevos de otros. Guarda o cancela para verlos.");
+          return;
+        }
+        state.options = options;
+        state.sig = sig;
+        setStatus("");
+        render();
+      } catch (_) {
+        /* ignora errores transitorios */
+      }
+    }, 5000);
+  }
+
   // --- Init -----------------------------------------------------------------
 
   async function init() {
@@ -406,10 +496,15 @@
     try {
       await loadData();
       render();
+      startSync();
     } catch (err) {
       els.app.innerHTML = '<p class="empty">No se pudieron cargar los datos.</p>';
     }
   }
+
+  document.addEventListener("focusout", () => {
+    if (pendingRemote && !anyPending() && !isEditing()) onRemoteChange();
+  });
 
   init();
 })();

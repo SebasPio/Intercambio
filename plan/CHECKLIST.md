@@ -58,8 +58,10 @@ Estado general: **en progreso — Etapa 1**.
 - [ ] Validación en navegador por el usuario (local y luego GitHub Pages).
 
 ### Etapa 6 — Sincronización
-- [ ] Realtime `postgres_changes` sobre `gift_options`.
-- [ ] Respaldo por polling si Realtime complica el acceso.
+- [x] Realtime `postgres_changes` sobre `gift_options` (funciona con el anon JWT;
+      la clave `sb_publishable_` **no** autoriza Realtime, por eso se usa el anon JWT).
+- [x] Respaldo por polling automático si Realtime no se suscribe.
+- [x] No pisa ediciones sin guardar: difiere la actualización y avisa.
 
 ### Etapa 7 — Pruebas (SETUP.md §12)
 - [x] Permiso sobre una persona / varias personas.
