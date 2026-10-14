@@ -1,6 +1,6 @@
 # Checklist de tareas
 
-Estado general: **en progreso — Etapa 1**.
+Estado general: **en progreso — Etapa 8 (despliegue)**.
 
 ## Decisiones fijadas
 
@@ -55,7 +55,7 @@ Estado general: **en progreso — Etapa 1**.
 - [x] Validación del enlace y gestión de sesión (localStorage + `session-info`).
 - [x] Edición con Guardar/Cancelar (diferencias respecto al estado original).
 - [x] Estados: cargando, guardado, error; modo solo lectura sin enlace.
-- [ ] Validación en navegador por el usuario (local y luego GitHub Pages).
+- [x] Validación en navegador (local, con sincronización entre dos ventanas). Falta validar en GitHub Pages.
 
 ### Etapa 6 — Sincronización
 - [x] Realtime `postgres_changes` sobre `gift_options` (funciona con el anon JWT;
@@ -71,13 +71,14 @@ Estado general: **en progreso — Etapa 1**.
 - [ ] Sesión expirada.
 - [x] Manipulación de `participant_id` (el servidor revalida permisos).
 - [ ] Actualizaciones concurrentes.
-- [ ] Sincronización entre dos navegadores.
+- [x] Sincronización entre dos ventanas/navegadores.
 - [x] Exportación (restauración pendiente de probar).
 
 ### Etapa 8 — Despliegue
-- [ ] Desplegar Edge Functions.
-- [ ] Configurar secretos del entorno.
-- [ ] Workflow de GitHub Actions para GitHub Pages.
+- [x] Desplegar Edge Functions.
+- [x] Configurar secretos del entorno (la `service_role` se inyecta automáticamente).
+- [x] Workflow de GitHub Actions para GitHub Pages (`.github/workflows/pages.yml`).
+- [ ] Hacer público el repositorio (Pages no funciona en privado sin plan Pro).
 - [ ] Verificar conexión de la web publicada con Supabase.
 
 ### Etapa 9 — Verificación final
@@ -91,6 +92,6 @@ Estado general: **en progreso — Etapa 1**.
 - [x] `supabase login` (access token).
 - [x] `supabase link --project-ref vnmvlrgaeesohkvnyytz`.
 - [x] `supabase db push --linked` (migraciones aplicadas).
-- [ ] Rellenar `.env` local con `service_role` (no versionar).
-- [ ] Ejecutar init/generación de enlaces y distribuirlos por WhatsApp.
-- [ ] Habilitar GitHub Pages.
+- [x] Rellenar `.env` local con `service_role` (no versionar).
+- [x] Ejecutar init/generación de enlaces (falta distribuirlos por WhatsApp).
+- [ ] Hacer público el repositorio y habilitar GitHub Pages.
