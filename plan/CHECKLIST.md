@@ -43,10 +43,12 @@ Estado general: **en progreso — Etapa 1**.
 - [x] Desplegadas (`--use-api`) y prueba de humo (401 + preflight OK).
 
 ### Etapa 4 — Scripts de administración (Deno, `service_role`)
-- [ ] Inicialización: participantes, asignaciones, identidades, permisos.
-- [ ] Generar enlaces.
-- [ ] Revocar / rotar enlaces.
-- [ ] Exportar / restaurar JSON.
+- [x] `scripts/admin.ts` (`init`, `list`, `revoke`, `rotate`, `export`, `restore`, `reset`).
+- [x] Inicialización: participantes, asignaciones, identidades, permisos.
+- [x] Generar enlaces (guardados en `links/`, ignorado por Git).
+- [x] Revocar / rotar enlaces (invalidan sesiones).
+- [x] Exportar / restaurar JSON (sin credenciales ni sesiones).
+- [x] Probado end-to-end contra las funciones desplegadas (13/13).
 
 ### Etapa 5 — Frontend
 - [ ] Lectura pública (participantes, asignaciones, opciones).
@@ -59,15 +61,15 @@ Estado general: **en progreso — Etapa 1**.
 - [ ] Respaldo por polling si Realtime complica el acceso.
 
 ### Etapa 7 — Pruebas (SETUP.md §12)
-- [ ] Permiso sobre una persona / varias personas.
+- [x] Permiso sobre una persona / varias personas.
 - [ ] Persona sin permiso sobre sí misma.
-- [ ] Edición fuera de permisos (rechazada).
-- [ ] Enlace inválido / revocado.
+- [x] Edición fuera de permisos (rechazada / 403).
+- [x] Enlace inválido / revocado.
 - [ ] Sesión expirada.
-- [ ] Manipulación de `participant_id` en el navegador.
+- [x] Manipulación de `participant_id` (el servidor revalida permisos).
 - [ ] Actualizaciones concurrentes.
 - [ ] Sincronización entre dos navegadores.
-- [ ] Exportación y restauración.
+- [x] Exportación (restauración pendiente de probar).
 
 ### Etapa 8 — Despliegue
 - [ ] Desplegar Edge Functions.

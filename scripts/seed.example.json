@@ -1,0 +1,14 @@
+{
+  "participants": ["Ana", "Beto", "Caro", "Dani"],
+  "assignments": [
+    { "giver": "Ana", "receiver": "Beto" },
+    { "giver": "Beto", "receiver": "Caro" },
+    { "giver": "Caro", "receiver": "Dani" },
+    { "giver": "Dani", "receiver": "Ana" }
+  ],
+  "identities": [
+    { "display_name": "Ana", "can_edit": ["Ana"] },
+    { "display_name": "Beto", "can_edit": ["Beto"] },
+    { "display_name": "Organizador", "can_edit": ["Caro", "Dani"] }
+  ]
+}
