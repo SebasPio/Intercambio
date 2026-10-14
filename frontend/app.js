@@ -165,7 +165,7 @@
     for (const participant of state.participants) {
       els.app.appendChild(renderCard(participant));
     }
-    if (anyPending()) els.app.appendChild(renderSaveBar());
+    if (state.editable.size > 0) els.app.appendChild(renderSaveBar());
   }
 
   function renderCard(participant) {
@@ -173,6 +173,7 @@
     const editable = state.editable.has(pid);
     const card = document.createElement("article");
     card.className = "card" + (editable ? " editable" : "");
+    card.dataset.pid = pid;
 
     const head = document.createElement("div");
     head.className = "card-head";
@@ -239,7 +240,7 @@
       input.value = item.text;
       input.addEventListener("input", () => {
         draft[index].text = input.value;
-        updateSaveBar();
+        refreshPendingState();
       });
 
       const del = document.createElement("button");
@@ -268,15 +269,18 @@
     add.addEventListener("click", () => {
       draftFor(pid).push({ id: null, text: "" });
       render();
+      const card = document.querySelector(`.card[data-pid="${pid}"]`);
+      const inputs = card ? card.querySelectorAll('input[type="text"]') : [];
+      if (inputs.length) inputs[inputs.length - 1].focus();
     });
     actions.appendChild(add);
 
-    if (hasPending(pid)) {
-      const pending = document.createElement("span");
-      pending.className = "pending";
-      pending.textContent = "cambios sin guardar";
-      actions.appendChild(pending);
-    }
+    const pending = document.createElement("span");
+    pending.className = "pending";
+    pending.dataset.pid = pid;
+    pending.textContent = "cambios sin guardar";
+    pending.hidden = !hasPending(pid);
+    actions.appendChild(pending);
     return actions;
   }
 
@@ -299,6 +303,7 @@
     save.className = "primary";
     save.textContent = "Guardar";
     save.id = "save-button";
+    save.disabled = !anyPending();
     save.addEventListener("click", () => saveAll(save));
 
     bar.appendChild(cancel);
@@ -306,13 +311,12 @@
     return bar;
   }
 
-  function updateSaveBar() {
-    const bar = document.querySelector(".save-bar");
-    if (anyPending()) {
-      if (!bar) render();
-    } else if (bar) {
-      bar.remove();
-    }
+  function refreshPendingState() {
+    const save = document.getElementById("save-button");
+    if (save) save.disabled = !anyPending();
+    document.querySelectorAll(".pending[data-pid]").forEach((el) => {
+      el.hidden = !hasPending(el.dataset.pid);
+    });
   }
 
   // --- Guardar --------------------------------------------------------------
