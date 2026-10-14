@@ -241,7 +241,6 @@
     card.appendChild(assign);
 
     // clarify: show context
-    const giverOfThis = giverOfReceiver(pid);
     const list = document.createElement("ul");
     list.className = "options";
     if (editable) {
