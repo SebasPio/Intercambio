@@ -1,6 +1,6 @@
 # Checklist de tareas
 
-Estado general: **en progreso — Etapa 8 (despliegue)**.
+Estado general: **en progreso — Etapa 9 (verificación final)**.
 
 ## Decisiones fijadas
 
@@ -78,8 +78,9 @@ Estado general: **en progreso — Etapa 8 (despliegue)**.
 - [x] Desplegar Edge Functions.
 - [x] Configurar secretos del entorno (la `service_role` se inyecta automáticamente).
 - [x] Workflow de GitHub Actions para GitHub Pages (`.github/workflows/pages.yml`).
-- [ ] Hacer público el repositorio (Pages no funciona en privado sin plan Pro).
-- [ ] Verificar conexión de la web publicada con Supabase.
+- [x] Repositorio público y Pages habilitado (Source: GitHub Actions).
+- [x] Desplegado en https://sebaspio.github.io/Intercambio/.
+- [x] Verificar conexión de la web publicada con Supabase (CORS + validate-link + options-write OK).
 
 ### Etapa 9 — Verificación final
 - [ ] Prueba end-to-end con enlaces reales (móvil y escritorio).
@@ -94,4 +95,4 @@ Estado general: **en progreso — Etapa 8 (despliegue)**.
 - [x] `supabase db push --linked` (migraciones aplicadas).
 - [x] Rellenar `.env` local con `service_role` (no versionar).
 - [x] Ejecutar init/generación de enlaces (falta distribuirlos por WhatsApp).
-- [ ] Hacer público el repositorio y habilitar GitHub Pages.
+- [x] Hacer público el repositorio y habilitar GitHub Pages.
