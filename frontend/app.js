@@ -445,6 +445,7 @@
       .subscribe((status) => {
         if (status === "SUBSCRIBED") {
           subscribed = true;
+          setStatus("Sincronización en tiempo real activa.", "ok");
         } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || status === "CLOSED") {
           if (!subscribed) startPolling();
         }
