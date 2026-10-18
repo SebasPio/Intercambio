@@ -165,7 +165,7 @@
       }
       els.greeting.innerHTML = `Hola, <strong>${escapeHtml(state.displayName || "")}</strong>.` +
         (receiverName
-          ? ` Te tocó darle a <strong>${escapeHtml(receiverName)}</strong>.`
+          ? ` Te tocó darle a <strong>${escapeHtml(receiverName)}</strong>. Estas son sus opciones`
           : (editableNames.length
             ? ` Puedes editar: <strong>${editableNames.map(escapeHtml).join(", ")}</strong>.`
             : " No tienes permisos de edición."));
@@ -220,7 +220,12 @@
     const head = document.createElement("div");
     head.className = "card-head";
     const h2 = document.createElement("h2");
-    h2.textContent = participant.name;
+    if(editable){
+      h2.textContent =  `Edita las opciones de ${participant.name}`;
+    }
+    else{
+      h2.textContent = `Las opciones de ${participant.name}`;
+    }
     head.appendChild(h2);
     if (editable) {
       const badge = document.createElement("span");
@@ -233,11 +238,11 @@
     const receiver = receiverOf(pid);
     const assign = document.createElement("p");
     assign.className = "assignment";
-    if (receiver) {
-      assign.innerHTML = `Le regala a <strong>${escapeHtml(receiver)}</strong>`;
-    } else {
-      assign.innerHTML = 'Sin asignación';
-    }
+     if (receiver) {
+       assign.innerHTML = `<small>Le regala a ${escapeHtml(receiver)}</small>`;
+     } else {
+       assign.innerHTML = 'Sin asignación';
+     }
     card.appendChild(assign);
 
     // clarify: show context
@@ -245,17 +250,17 @@
     list.className = "options";
     if (editable) {
       // prepend context label
-      const ctx = document.createElement("li");
-      ctx.className = "empty";
-      ctx.innerHTML = receiver ? `Opciones para <strong>${escapeHtml(receiver)}</strong>` : 'Edita tus opciones';
-      list.appendChild(ctx);
+      // const ctx = document.createElement("li");
+      // // ctx.className = "empty";
+      // ctx.innerHTML = receiver ? `Agrega opciones de <strong>${escapeHtml(participant.name)}</strong>:` : 'Edita tus opciones';
+      // list.appendChild(ctx);
       renderEditableOptions(list, pid);
     } else {
       const opts = optionsOf(pid);
-      const ctx = document.createElement("li");
-      ctx.className = "empty";
-      ctx.innerHTML = `Opciones de <strong>${escapeHtml(participant.name)}</strong>`;
-      list.appendChild(ctx);
+      // const ctx = document.createElement("li");
+      // // ctx.className = "empty";
+      // ctx.innerHTML = `Opciones de <strong>${escapeHtml(participant.name)}</strong>:`;
+      // list.appendChild(ctx);
       if (opts.length === 0) {
         const li = document.createElement("li");
         li.className = "empty";

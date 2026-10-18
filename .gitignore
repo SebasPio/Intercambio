@@ -28,3 +28,6 @@ Thumbs.db
 
 # Node (por si se usa alguna herramienta puntual)
 node_modules/
+
+# Seed con datos reales (no versionar)
+scripts/seed.local.json

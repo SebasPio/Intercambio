@@ -65,7 +65,7 @@ h1 { font-size: 1.5rem; margin: 0 0 0.25rem; }
   border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
-.assignment { margin: 0.35rem 0 0.75rem; color: var(--muted); font-size: 0.92rem; }
+.assignment { margin: 0.35rem 0 0.75rem; color: var(--muted); font-size: 0.80rem; }
 .assignment strong { color: var(--text); }
 
 ul.options { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
