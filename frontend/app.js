@@ -179,33 +179,53 @@
       return;
     }
 
-    let listParticipants = [...state.participants];
+    let all = [...state.participants];
+    let first = [];
+    let editableOthers = [];
+    let others = [];
     if (state.token && state.displayName) {
-      const pidSelf = listParticipants.find(p => p.name === state.displayName)?.id;
-      const pref = [];
+      const pidSelf = all.find(p => p.name === state.displayName)?.id;
       if (pidSelf) {
         const recv = receiverOf(pidSelf);
-        const recvPid = listParticipants.find(p => p.name === recv)?.id;
+        const recvPid = all.find(p => p.name === recv)?.id;
         if (recvPid) {
-          pref.push(listParticipants.find(p => p.id === recvPid));
-          listParticipants = listParticipants.filter(p => p.id !== recvPid);
+          first.push(all.find(p => p.id === recvPid));
+          all = all.filter(p => p.id !== recvPid);
         }
-        // add self if present and editable
-        const selfP = listParticipants.find(p => p.id === pidSelf);
+        const selfP = all.find(p => p.id === pidSelf);
         if (selfP && state.editable.has(pidSelf)) {
-          pref.push(selfP);
-          listParticipants = listParticipants.filter(p => p.id !== pidSelf);
+          first.push(selfP);
+          all = all.filter(p => p.id !== pidSelf);
         }
-        // add other editable
-        for (const p of listParticipants.filter(p => state.editable.has(p.id))) {
-          pref.push(p);
+        for (const p of all.filter(p => state.editable.has(p.id))) {
+          editableOthers.push(p);
         }
-        listParticipants = listParticipants.filter(p => !state.editable.has(p.id));
+        all = all.filter(p => !state.editable.has(p.id));
+        others = all;
+      } else {
+        others = all;
       }
-      listParticipants = pref.concat(listParticipants);
+    } else {
+      others = all;
     }
-    for (const participant of listParticipants) {
+    for (const participant of first) {
       els.app.appendChild(renderCard(participant));
+    }
+    if (editableOthers.length) {
+      for (const participant of editableOthers) {
+        els.app.appendChild(renderCard(participant));
+      }
+    }
+    if (others.length) {
+      const sec = document.createElement('details');
+      sec.className = 'others';
+      const sum = document.createElement('summary');
+      sum.textContent = 'Otros participantes';
+      sec.appendChild(sum);
+      for (const participant of others) {
+        sec.appendChild(renderCard(participant));
+      }
+      els.app.appendChild(sec);
     }
     if (state.editable.size > 0) els.app.appendChild(renderSaveBar());
   }
